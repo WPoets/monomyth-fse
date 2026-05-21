@@ -1,0 +1,147 @@
+/**
+ * Monomyth FSE - Custom Styles
+ * 
+ * Add your custom CSS here. This file is enqueued after the main style.css
+ * and can be used to override or extend the theme's default styles.
+ */
+
+/* ==========================================================================
+   Custom Styles
+   ========================================================================== */
+
+/* Example: Custom button hover effect */
+.wp-block-button__link {
+    transition: all var(--monomyth-transition-fast);
+}
+
+.wp-block-button__link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--wp--preset--shadow--sm);
+}
+
+/* Example: Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Example: Focus styles for accessibility */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid var(--wp--preset--color--primary);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Awesome Enterprise Integration Styles
+   ========================================================================== */
+
+/* Awesome Block wrapper */
+.wp-block-monomyth-awesome-block {
+    width: 100%;
+}
+
+/* Header rendered by Awesome Block */
+.site-header.ae-header {
+    width: 100%;
+}
+
+/* Footer rendered by Awesome Block */
+.site-footer.ae-footer {
+    width: 100%;
+}
+
+/* Sidebar rendered by Awesome Block */
+.site-sidebar.ae-sidebar {
+    width: 100%;
+}
+
+/* Container for Awesome Enterprise output */
+.aw2-output {
+    width: 100%;
+}
+
+/* Style adjustments for SPA elements */
+.spa-container {
+    width: 100%;
+}
+
+/* Placeholder styling when AE service returns nothing */
+.ae-block-placeholder {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    text-align: center;
+    color: #666;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Service-specific styling (examples) */
+.ae-service--theme_parts-header {
+    /* Header specific styles */
+}
+
+.ae-service--theme_parts-footer {
+    /* Footer specific styles */
+}
+
+.ae-service--theme_parts-sidebar {
+    /* Sidebar specific styles */
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 782px) {
+    /* Mobile navigation adjustments */
+    .wp-block-navigation__responsive-container.is-menu-open {
+        padding: var(--wp--preset--spacing--40);
+    }
+}
+
+@media (max-width: 600px) {
+    /* Small screen adjustments */
+    .wp-block-columns {
+        flex-wrap: wrap;
+    }
+    
+    .wp-block-column {
+        flex-basis: 100% !important;
+    }
+}
+
+/* ==========================================================================
+   Animation Classes (Optional)
+   ========================================================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.5s ease-in-out;
+}

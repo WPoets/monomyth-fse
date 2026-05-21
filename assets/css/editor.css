@@ -1,0 +1,77 @@
+/**
+ * Monomyth FSE - Editor Styles
+ * 
+ * These styles are applied to the WordPress Block Editor
+ * to provide a more accurate preview of the front-end appearance.
+ */
+
+/* ==========================================================================
+   Editor-specific styles
+   ========================================================================== */
+
+/* Match editor background to theme */
+.editor-styles-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Ensure proper content width in editor */
+.editor-styles-wrapper .wp-block {
+    max-width: 720px;
+}
+
+.editor-styles-wrapper .wp-block[data-align="wide"] {
+    max-width: 1200px;
+}
+
+.editor-styles-wrapper .wp-block[data-align="full"] {
+    max-width: none;
+}
+
+/* Typography in editor */
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6 {
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.editor-styles-wrapper a {
+    color: #0073aa;
+}
+
+/* Button block in editor */
+.editor-styles-wrapper .wp-block-button__link {
+    border-radius: 4px;
+    padding: 0.5rem 1.5rem;
+}
+
+/* Code block in editor */
+.editor-styles-wrapper .wp-block-code {
+    font-family: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+    font-size: 0.875rem;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+/* Quote block in editor */
+.editor-styles-wrapper .wp-block-quote {
+    border-left: 4px solid #0073aa;
+    padding-left: 1.5rem;
+    font-style: italic;
+}
+
+/* Separator in editor */
+.editor-styles-wrapper .wp-block-separator {
+    border: none;
+    border-bottom: 1px solid #e2e4e7;
+}
+
+.editor-styles-wrapper .wp-block-separator.is-style-thick {
+    border-bottom-width: 4px;
+}

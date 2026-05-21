@@ -1,0 +1,199 @@
+/**
+ * Awesome Block - Editor Styles
+ *
+ * Styles for the Awesome Block in the Gutenberg editor.
+ *
+ * @package Monomyth_FSE
+ */
+
+/* Block placeholders */
+.wp-block-monomyth-awesome-block .components-placeholder,
+.wp-block-monomyth-ae-content-layout .components-placeholder,
+.wp-block-monomyth-ae-archive-layout .components-placeholder {
+    background-color: #f8f9fa;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+}
+
+/* Dynamic preview styling */
+.ae-block-placeholder {
+    padding: 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.ae-content-layout-preview,
+.ae-archive-layout-preview {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    padding: 30px;
+}
+
+.ae-content-layout-preview strong,
+.ae-archive-layout-preview strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.ae-content-layout-preview small,
+.ae-archive-layout-preview small {
+    opacity: 0.9;
+}
+
+/* Loading state */
+.ae-block-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    color: #757575;
+}
+
+/* Error state */
+.ae-block-error {
+    padding: 20px;
+    background: #fcf0f0;
+    border: 1px solid #e8baba;
+    border-radius: 4px;
+    color: #8a1f1f;
+    text-align: center;
+}
+
+/* Empty state */
+.ae-block-empty {
+    padding: 24px;
+    background: #fff8e5;
+    border: 1px dashed #f0c36d;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.ae-block-empty p {
+    margin: 0;
+    color: #6b5900;
+}
+
+.ae-block-empty .ae-block-help {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #8c7300;
+}
+
+/* Placeholder shown when service not configured */
+.ae-block-placeholder {
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Notice styling */
+.ae-block-notice {
+    margin-bottom: 16px;
+}
+
+/* Preview wrapper */
+.wp-block-monomyth-awesome-block {
+    min-height: 50px;
+}
+
+/* Alignment styles in editor */
+.wp-block-monomyth-awesome-block.alignwide {
+    max-width: 1200px;
+}
+
+.wp-block-monomyth-awesome-block.alignfull {
+    max-width: none;
+}
+
+/* Service indicator badge in editor */
+.wp-block-monomyth-awesome-block::before {
+    content: attr(data-service);
+    display: none;
+    position: absolute;
+    top: -24px;
+    left: 0;
+    font-size: 11px;
+    background: #667eea;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px 3px 0 0;
+}
+
+.wp-block-monomyth-awesome-block:hover::before {
+    display: block;
+}
+
+/* Inspector panel styles */
+.editor-styles-wrapper .ae-service-examples {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.editor-styles-wrapper .ae-service-examples code {
+    display: block;
+    padding: 4px 0;
+    font-size: 12px;
+    color: #1e1e1e;
+}
+
+/* Block wrapper styles based on wrapper type */
+.wp-block-monomyth-awesome-block header,
+.wp-block-monomyth-awesome-block footer,
+.wp-block-monomyth-awesome-block nav {
+    /* Visual indicator in editor */
+    position: relative;
+}
+
+/* Header wrapper indicator */
+.wp-block-monomyth-awesome-block header::after {
+    content: 'Header';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 10px;
+    background: rgba(0, 115, 170, 0.9);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+/* Footer wrapper indicator */
+.wp-block-monomyth-awesome-block footer::after {
+    content: 'Footer';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 10px;
+    background: rgba(0, 115, 170, 0.9);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+/* Nav wrapper indicator */
+.wp-block-monomyth-awesome-block nav::after {
+    content: 'Navigation';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 10px;
+    background: rgba(0, 115, 170, 0.9);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 2px;
+    pointer-events: none;
+}
