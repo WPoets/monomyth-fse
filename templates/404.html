@@ -1,40 +1,8 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"layout":{"type":"constrained"}} -->
-<main class="wp-block-group" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)">
-    
-    <!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"constrained","contentSize":"600px"}} -->
-    <div class="wp-block-group">
-        
-        <!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontSize":"clamp(4rem, 10vw, 8rem)","fontWeight":"700"}}} -->
-        <h1 class="wp-block-heading has-text-align-center" style="font-size:clamp(4rem, 10vw, 8rem);font-weight:700">404</h1>
-        <!-- /wp:heading -->
-        
-        <!-- wp:heading {"textAlign":"center","level":2,"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|30"}}}} -->
-        <h2 class="wp-block-heading has-text-align-center" style="margin-bottom:var(--wp--preset--spacing--30)">Page Not Found</h2>
-        <!-- /wp:heading -->
-        
-        <!-- wp:paragraph {"align":"center"} -->
-        <p class="has-text-align-center">Sorry, the page you're looking for doesn't exist or has been moved. Please check the URL or use the navigation to find what you're looking for.</p>
-        <!-- /wp:paragraph -->
-        
-        <!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search this site...","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} /-->
-        
-        <!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}},"layout":{"type":"flex","justifyContent":"center"}} -->
-        <div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--40)">
-            <!-- wp:buttons -->
-            <div class="wp-block-buttons">
-                <!-- wp:button -->
-                <div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="/">Go to Homepage</a></div>
-                <!-- /wp:button -->
-            </div>
-            <!-- /wp:buttons -->
-        </div>
-        <!-- /wp:group -->
-        
-    </div>
-    <!-- /wp:group -->
-    
+<!-- wp:group {"tagName":"main","className":"site-main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group site-main">
+    <!-- wp:monomyth/awesome-block {"service":"core.404","wrapper":"section","wrapperClass":"error-404","fallback":"<h1>Page Not Found</h1><p>The page you are looking for could not be found.</p>"} /-->
 </main>
 <!-- /wp:group -->
 
