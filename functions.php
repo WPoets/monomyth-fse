@@ -638,7 +638,20 @@ add_action('after_setup_theme', 'monomyth_setup');
  */
 function monomyth_scripts()
 {
-    wp_enqueue_style('monomyth-style', get_stylesheet_uri(), array(), MONOMYTH_VERSION);
+    //wp_enqueue_style('monomyth-style', get_stylesheet_uri(), array(), MONOMYTH_VERSION);
+
+    $base_url = rtrim(site_url(), '/');
+
+    // Construct the full virtual path
+    $virtual_css_url = $base_url . '/awesome-css/css/stylesheet';
+
+    // Enqueue it using a unique handle
+    wp_enqueue_style(
+        'awesome-dynamic-styles',
+        $virtual_css_url,
+        array(),
+        null // Pass null for versioning if the virtual route handles its own cache-busting
+    );
 
     if (file_exists(MONOMYTH_DIR . '/assets/css/custom.css')) {
         wp_enqueue_style('monomyth-custom', MONOMYTH_URI . '/assets/css/custom.css', array('monomyth-style'), MONOMYTH_VERSION);
@@ -652,6 +665,7 @@ function monomyth_scripts()
             'isAwesomeActive' => monomyth_is_awesome_active(),
         ));
     }
+
 }
 add_action('wp_enqueue_scripts', 'monomyth_scripts');
 
