@@ -24,12 +24,12 @@ define('MONOMYTH_URI', get_template_directory_uri());
 
 /**
  * ============================================================================
- * AWESOME ENTERPRISE DETECTION
+ * AWESOME XP DETECTION
  * ============================================================================
  */
 
 /**
- * Check if Awesome Enterprise is active
+ * Check if Awesome XP is active
  */
 function monomyth_is_awesome_active()
 {
@@ -157,7 +157,7 @@ function monomyth_register_ae_blocks()
     register_block_type('monomyth/awesome-block', array(
         'api_version' => 3,
         'title' => __('Awesome Block', 'monomyth-fse'),
-        'description' => __('Render content from any Awesome Enterprise module/template.', 'monomyth-fse'),
+        'description' => __('Render content from any Awesome XP/Enterprise module/template.', 'monomyth-fse'),
         'category' => 'awesome-enterprise',
         'icon' => 'superhero-alt',
         'keywords' => array('awesome', 'enterprise', 'module', 'template', 'shortcode'),
@@ -290,7 +290,7 @@ function monomyth_render_awesome_block($attributes, $content)
         }
         if (defined('REST_REQUEST') && REST_REQUEST) {
             return "<{$wrapper} {$wrapper_attrs}><div class=\"ae-block-placeholder\">" .
-                esc_html__('Configure: Enter an Awesome Enterprise service path', 'monomyth-fse') .
+                esc_html__('Configure: Enter an Awesome XP/Enterprise service path', 'monomyth-fse') .
                 "</div></{$wrapper}>";
         }
         return '';
@@ -391,7 +391,7 @@ function monomyth_render_ae_content_layout_block($attributes, $content)
             return "<{$wrapper} {$wrapper_attrs}>" . do_shortcode($fallback_content) . "</{$wrapper}>";
         }
         return "<{$wrapper} {$wrapper_attrs}><div class=\"ae-block-error\">" .
-            esc_html__('Awesome Enterprise is not active.', 'monomyth-fse') .
+            esc_html__('Awesome XP/Enterprise is not active.', 'monomyth-fse') .
             "</div></{$wrapper}>";
     }
 
