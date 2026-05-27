@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 /**
  * Define theme constants
  */
-define('MONOMYTH_VERSION', '1.0.0');
+define('MONOMYTH_VERSION', '1.0.1');
 define('MONOMYTH_DIR', get_template_directory());
 define('MONOMYTH_URI', get_template_directory_uri());
 
