@@ -4,9 +4,9 @@ Theme URI: https://github.com/WPoets/monomyth-fse
 Author: WPoets
 Author URI: https://wpoets.com
 Description: A minimal, blank Full Site Editing (FSE) theme designed to work seamlessly with the Awesome No Code Platform. This theme provides a clean foundation for building custom WordPress sites using the block editor and the Awesome Enterprise framework.
-Version: 1.0.0
-Requires at least: 6.0
-Tested up to: 6.7
+Version: 1.0.1
+Requires at least: 7.0
+Tested up to: 7.0
 Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,24 +33,24 @@ Awesome Enterprise framework.
     --monomyth-color-background: #ffffff;
     --monomyth-color-foreground: #1e1e1e;
     --monomyth-color-border: #e2e4e7;
-    
+
     /* Typography */
     --monomyth-font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     --monomyth-font-secondary: Georgia, "Times New Roman", Times, serif;
     --monomyth-font-mono: Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
-    
+
     /* Spacing */
     --monomyth-spacing-xs: 0.25rem;
     --monomyth-spacing-sm: 0.5rem;
     --monomyth-spacing-md: 1rem;
     --monomyth-spacing-lg: 2rem;
     --monomyth-spacing-xl: 4rem;
-    
+
     /* Layout */
     --monomyth-content-width: 720px;
     --monomyth-wide-width: 1200px;
     --monomyth-full-width: 100%;
-    
+
     /* Transitions */
     --monomyth-transition-fast: 150ms ease-in-out;
     --monomyth-transition-normal: 300ms ease-in-out;
@@ -88,7 +88,12 @@ body {
    Typography
    ========================================================================== */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin-top: 0;
     margin-bottom: var(--monomyth-spacing-md);
     font-weight: 600;
@@ -133,22 +138,22 @@ figure {
     padding-top: 0;
 }
 
-.wp-site-blocks > * + * {
+.wp-site-blocks>*+* {
     margin-top: 0;
 }
 
 /* Content Width Classes */
-.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+.is-layout-constrained> :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
     max-width: var(--monomyth-content-width);
     margin-left: auto;
     margin-right: auto;
 }
 
-.is-layout-constrained > .alignwide {
+.is-layout-constrained>.alignwide {
     max-width: var(--monomyth-wide-width);
 }
 
-.is-layout-constrained > .alignfull {
+.is-layout-constrained>.alignfull {
     max-width: none;
 }
 
@@ -203,6 +208,7 @@ figure {
    ========================================================================== */
 
 @media print {
+
     *,
     *::before,
     *::after {
@@ -211,27 +217,27 @@ figure {
         box-shadow: none !important;
         text-shadow: none !important;
     }
-    
+
     a,
     a:visited {
         text-decoration: underline;
     }
-    
+
     a[href]::after {
         content: " (" attr(href) ")";
     }
-    
+
     img {
         page-break-inside: avoid;
     }
-    
+
     p,
     h2,
     h3 {
         orphans: 3;
         widows: 3;
     }
-    
+
     h2,
     h3 {
         page-break-after: avoid;

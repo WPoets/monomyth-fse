@@ -1,10 +1,10 @@
 === Monomyth FSE ===
 Contributors: wpoets
 Tags: full-site-editing, block-patterns, block-styles, custom-colors, custom-logo, custom-menu, editor-style, featured-images, wide-blocks, blank-canvas, awesome-enterprise
-Requires at least: 6.0
-Tested up to: 6.7
+Requires at least: 7.0
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
