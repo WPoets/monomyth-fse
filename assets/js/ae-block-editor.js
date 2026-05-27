@@ -176,7 +176,7 @@
     }
 
     /**
-     * Resolution order info box
+     * Resolution order info box for Inspector
      * @param {string} baseModule - The base module name
      * @param {boolean} usePostTypePrefix - Whether post type prefix is enabled
      */
@@ -202,6 +202,147 @@
         },
             el( 'strong', {}, __( 'Resolution Order:', 'monomyth-fse' ) ),
             el( 'ol', { style: { margin: '8px 0 0 16px', padding: 0 } }, items )
+        );
+    }
+
+    /**
+     * Visual Editor Preview for Content/Archive Layout blocks
+     * Shows a clear visual representation of what the block does
+     */
+    function LayoutBlockPreview( props ) {
+        var type = props.type || 'content';
+        var baseModule = props.baseModule || '';
+        var usePostTypePrefix = props.usePostTypePrefix !== false;
+        var icon = props.icon;
+        
+        var bgColor = type === 'content' ? '#10b981' : '#6366f1';
+        var typeLabel = type === 'content' 
+            ? __( 'AE Content Layout', 'monomyth-fse' )
+            : __( 'AE Archive Layout', 'monomyth-fse' );
+        var typeDesc = type === 'content'
+            ? __( 'Dynamic single post/page content', 'monomyth-fse' )
+            : __( 'Dynamic archive/listing content', 'monomyth-fse' );
+
+        // Build resolution steps for preview
+        var resolutionSteps = [];
+        if ( usePostTypePrefix ) {
+            resolutionSteps.push( '{post_type}-' + baseModule );
+        }
+        resolutionSteps.push( baseModule );
+
+        return el( 'div', {
+            className: 'ae-layout-preview',
+            style: {
+                background: 'linear-gradient(135deg, ' + bgColor + ' 0%, ' + bgColor + 'dd 100%)',
+                borderRadius: '8px',
+                padding: '24px',
+                color: '#ffffff',
+                textAlign: 'center',
+                minHeight: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '12px'
+            }
+        },
+            // Icon and title row
+            el( 'div', { 
+                style: { 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '8px',
+                    marginBottom: '4px'
+                } 
+            },
+                el( 'span', { 
+                    style: { 
+                        background: 'rgba(255,255,255,0.2)', 
+                        borderRadius: '6px', 
+                        padding: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    } 
+                }, icon ),
+                el( 'strong', { 
+                    style: { 
+                        fontSize: '16px',
+                        fontWeight: '600'
+                    } 
+                }, typeLabel )
+            ),
+            
+            // Description
+            el( 'div', { 
+                style: { 
+                    fontSize: '13px', 
+                    opacity: '0.9',
+                    marginBottom: '8px'
+                } 
+            }, typeDesc ),
+            
+            // Module info box
+            el( 'div', {
+                style: {
+                    background: 'rgba(255,255,255,0.15)',
+                    borderRadius: '6px',
+                    padding: '12px 16px',
+                    width: '100%',
+                    maxWidth: '400px'
+                }
+            },
+                el( 'div', { 
+                    style: { 
+                        fontSize: '11px', 
+                        textTransform: 'uppercase', 
+                        letterSpacing: '0.5px',
+                        opacity: '0.8',
+                        marginBottom: '6px'
+                    } 
+                }, __( 'Module Resolution', 'monomyth-fse' ) ),
+                
+                // Resolution steps
+                el( 'div', { 
+                    style: { 
+                        fontFamily: 'monospace', 
+                        fontSize: '13px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '4px'
+                    } 
+                },
+                    resolutionSteps.map( function( step, index ) {
+                        return el( 'div', { 
+                            key: index,
+                            style: {
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px'
+                            }
+                        },
+                            el( 'span', { 
+                                style: { 
+                                    background: 'rgba(255,255,255,0.3)',
+                                    borderRadius: '3px',
+                                    padding: '1px 6px',
+                                    fontSize: '10px'
+                                } 
+                            }, index + 1 ),
+                            el( 'span', {}, step )
+                        );
+                    })
+                )
+            ),
+            
+            // Help text
+            el( 'div', { 
+                style: { 
+                    fontSize: '11px', 
+                    opacity: '0.7',
+                    marginTop: '8px'
+                } 
+            }, __( 'Configure in block settings →', 'monomyth-fse' ) )
         );
     }
 
@@ -343,14 +484,54 @@
                     } )
                 );
             } else {
-                // Show server-side rendered preview
-                blockContent = el( ServerSideRender, {
-                    block: 'monomyth/awesome-block',
-                    attributes: attributes,
-                    LoadingResponsePlaceholder: LoadingPlaceholder,
-                    ErrorResponsePlaceholder: ErrorPlaceholder,
-                    EmptyResponsePlaceholder: createEmptyPlaceholder( service )
-                } );
+                // Show styled preview with service info
+                blockContent = el( 'div', {
+                    className: 'ae-awesome-block-preview',
+                    style: {
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        borderRadius: '8px',
+                        padding: '20px',
+                        color: '#ffffff',
+                        textAlign: 'center'
+                    }
+                },
+                    el( 'div', { 
+                        style: { 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            gap: '8px',
+                            marginBottom: '8px'
+                        } 
+                    },
+                        el( 'span', { 
+                            style: { 
+                                background: 'rgba(255,255,255,0.2)', 
+                                borderRadius: '6px', 
+                                padding: '6px',
+                                display: 'flex'
+                            } 
+                        }, awesomeIcon ),
+                        el( 'strong', {}, __( 'Awesome Block', 'monomyth-fse' ) )
+                    ),
+                    el( 'div', {
+                        style: {
+                            background: 'rgba(255,255,255,0.15)',
+                            borderRadius: '4px',
+                            padding: '8px 12px',
+                            fontFamily: 'monospace',
+                            fontSize: '13px',
+                            marginTop: '8px'
+                        }
+                    }, service ),
+                    params && el( 'div', {
+                        style: {
+                            fontSize: '11px',
+                            opacity: '0.8',
+                            marginTop: '6px'
+                        }
+                    }, __( 'Params:', 'monomyth-fse' ) + ' ' + params )
+                );
             }
 
             return el( 'div', blockProps,
@@ -495,13 +676,12 @@
                 )
             );
 
-            // Server-side rendered preview
-            var blockContent = el( ServerSideRender, {
-                block: 'monomyth/ae-content-layout',
-                attributes: attributes,
-                LoadingResponsePlaceholder: LoadingPlaceholder,
-                ErrorResponsePlaceholder: ErrorPlaceholder,
-                EmptyResponsePlaceholder: createEmptyPlaceholder( baseModule )
+            // Visual preview (not server-side render)
+            var blockContent = el( LayoutBlockPreview, {
+                type: 'content',
+                baseModule: baseModule,
+                usePostTypePrefix: usePostTypePrefix,
+                icon: layoutIcon
             } );
 
             return el( 'div', blockProps,
@@ -645,13 +825,12 @@
                 )
             );
 
-            // Server-side rendered preview
-            var blockContent = el( ServerSideRender, {
-                block: 'monomyth/ae-archive-layout',
-                attributes: attributes,
-                LoadingResponsePlaceholder: LoadingPlaceholder,
-                ErrorResponsePlaceholder: ErrorPlaceholder,
-                EmptyResponsePlaceholder: createEmptyPlaceholder( baseModule )
+            // Visual preview (not server-side render)
+            var blockContent = el( LayoutBlockPreview, {
+                type: 'archive',
+                baseModule: baseModule,
+                usePostTypePrefix: usePostTypePrefix,
+                icon: archiveIcon
             } );
 
             return el( 'div', blockProps,
