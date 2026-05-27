@@ -51,7 +51,7 @@ function monomyth_ae_module_exists($module_name, $post_type = '')
         return false;
     }
 
-    if (function_exists('\aw2_library::post_exists')) {
+    if (class_exists('aw2_library') && method_exists('aw2_library', 'post_exists')) {
         return \aw2_library::post_exists($module_name, $post_type);
     }
 
@@ -302,6 +302,7 @@ function monomyth_render_awesome_block($attributes, $content)
         $shortcode .= ' ' . $params;
     }
     $shortcode .= ' /]';
+    $output = '';
     if (monomyth_is_awesome_active()) {
 
         $output = \aw2_library::parse_shortcode($shortcode);
@@ -434,6 +435,7 @@ function monomyth_render_ae_content_layout_block($attributes, $content)
         $post_type_to_use = $core_post_type;
     }
 
+    $output = '';
     // Run the module
     if (!empty($module_to_use) && !empty($post_type_to_use)) {
         $output = monomyth_ae_module_run(array('post_type' => $post_type_to_use), $module_to_use);
@@ -531,6 +533,7 @@ function monomyth_render_ae_archive_layout_block($attributes, $content)
         $post_type_to_use = $core_post_type;
     }
 
+    $output = '';
     if (!empty($module_to_use) && !empty($post_type_to_use)) {
         $output = monomyth_ae_module_run(array('post_type' => $post_type_to_use), $module_to_use);
 
@@ -654,7 +657,7 @@ function monomyth_scripts()
     );
 
     if (file_exists(MONOMYTH_DIR . '/assets/css/custom.css')) {
-        wp_enqueue_style('monomyth-custom', MONOMYTH_URI . '/assets/css/custom.css', array('monomyth-style'), MONOMYTH_VERSION);
+        wp_enqueue_style('monomyth-custom', MONOMYTH_URI . '/assets/css/custom.css', array(), MONOMYTH_VERSION);
     }
 
     if (file_exists(MONOMYTH_DIR . '/assets/js/custom.js')) {
@@ -715,3 +718,12 @@ function monomyth_load_awx_integration()
     new AWX_Theme_JSON_Integration();
 }
 add_action('after_setup_theme', 'monomyth_load_awx_integration');
+
+// GitHub Updater
+require_once get_template_directory() . '/inc/github-updater.php';
+
+Monomyth_GitHub_Updater::init(array(
+    'slug' => 'monomyth-fse',         // Your theme folder name
+    'repo' => 'WPoets/monomyth-fse',  // GitHub username/repo
+    'cache_hours' => 24,
+));
