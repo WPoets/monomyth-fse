@@ -21,7 +21,7 @@
  * - The version tag must be greater than style.css Version header
  * 
  * @package Monomyth_FSE
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -231,29 +231,69 @@ class Monomyth_GitHub_Updater {
 
     /**
      * Fix folder name after extraction
-     * GitHub zipball creates "user-repo-hash" folders
+     * 
+     * GitHub zipball creates folders like "username-repo-hash"
+     * This renames it to match the theme slug
+     *
+     * @param string      $source        Path to the extracted source directory
+     * @param string      $remote_source Path to the remote source (zip file)
+     * @param WP_Upgrader $upgrader      Upgrader instance
+     * @param array       $hook_extra    Extra arguments
+     * @return string|WP_Error Corrected source path or error
      */
     public function fix_folder_name( $source, $remote_source, $upgrader, $hook_extra = array() ) {
         global $wp_filesystem;
 
-        if ( ! isset( $hook_extra['theme'] ) || $hook_extra['theme'] !== $this->config['slug'] ) {
+        // Only process theme updates
+        if ( ! isset( $hook_extra['theme'] ) ) {
             return $source;
         }
 
-        $correct_name = $this->config['slug'];
-        $current_name = basename( untrailingslashit( $source ) );
-
-        if ( $current_name === $correct_name ) {
+        // Only process our theme
+        if ( $hook_extra['theme'] !== $this->config['slug'] ) {
             return $source;
         }
 
-        $new_source = trailingslashit( dirname( untrailingslashit( $source ) ) ) . $correct_name . '/';
-
-        if ( $wp_filesystem->move( untrailingslashit( $source ), untrailingslashit( $new_source ) ) ) {
-            return $new_source;
+        // Ensure filesystem is available
+        if ( ! $wp_filesystem ) {
+            return $source;
         }
 
-        return $source;
+        // Remove trailing slash for consistent handling
+        $source_dir = untrailingslashit( $source );
+        $source_base = basename( $source_dir );
+        $target_name = $this->config['slug'];
+
+        // Already correct? Return as-is
+        if ( $source_base === $target_name ) {
+            return $source;
+        }
+
+        // Build the new path
+        $parent_dir = dirname( $source_dir );
+        $new_source_dir = trailingslashit( $parent_dir ) . $target_name;
+
+        // Check if target already exists and remove it
+        if ( $wp_filesystem->exists( $new_source_dir ) ) {
+            $wp_filesystem->delete( $new_source_dir, true );
+        }
+
+        // Rename the directory
+        $moved = $wp_filesystem->move( $source_dir, $new_source_dir );
+
+        if ( ! $moved ) {
+            return new WP_Error(
+                'rename_failed',
+                sprintf(
+                    __( 'Could not rename theme folder from "%s" to "%s".', 'monomyth-fse' ),
+                    $source_base,
+                    $target_name
+                )
+            );
+        }
+
+        // Return with trailing slash (WordPress expects this)
+        return trailingslashit( $new_source_dir );
     }
 
     /**
