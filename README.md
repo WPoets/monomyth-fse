@@ -3,6 +3,10 @@ Monomyth FSE is a minimal Full Site Editing (FSE) theme designed to work seamles
 
 ### Changelog 
 
+##### 1.0.2
+* Fixed: Theme folder name on update was not getting created properly
+* Fixed: Moved the helper methods into the theme integration class itself so it's self-contained.
+
 ##### 1.0.1
 * Improved: Implemented github auto-update
 * Fixed: Undefined $output Variable
