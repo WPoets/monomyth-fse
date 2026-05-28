@@ -194,11 +194,11 @@ class AWX_Theme_JSON_Integration
         if (!empty($tokens['fontFamily'])) {
             $families = [];
             foreach ($tokens['fontFamily'] as $slug => $family) {
-                $raw_value = AWX_Token_Defaults::get_value($family);
+                $raw_value = self::get_value($family);
                 $families[] = [
                     'slug' => 'awx-' . $slug,
                     'name' => is_array($family) ? ($family['name'] ?? $slug) : $slug,
-                    'fontFamily' => AWX_Token_Defaults::sanitize_font_family($raw_value),
+                    'fontFamily' => self::sanitize_font_family($raw_value),
                 ];
             }
             $result['fontFamilies'] = $families;
@@ -208,7 +208,7 @@ class AWX_Theme_JSON_Integration
         if (!empty($tokens['fontSize'])) {
             $sizes = [];
             foreach ($tokens['fontSize'] as $slug => $size) {
-                $value = AWX_Token_Defaults::get_value($size);
+                $value = self::get_value($size);
 
                 $entry = [
                     'slug' => 'awx-' . $slug,
@@ -218,8 +218,8 @@ class AWX_Theme_JSON_Integration
 
                 // Fluid handling
                 if (is_array($size) && !empty($size['fluid'])) {
-                    $fluid_min = AWX_Token_Defaults::sanitize_css_value($size['fluid']['min'] ?? '');
-                    $fluid_max = AWX_Token_Defaults::sanitize_css_value($size['fluid']['max'] ?? '');
+                    $fluid_min = self::sanitize_css_value($size['fluid']['min'] ?? '');
+                    $fluid_max = self::sanitize_css_value($size['fluid']['max'] ?? '');
                     if ($fluid_min && $fluid_max) {
                         $entry['fluid'] = [
                             'min' => $fluid_min,
@@ -249,7 +249,7 @@ class AWX_Theme_JSON_Integration
 
         if (!empty($tokens['space'])) {
             foreach ($tokens['space'] as $slug => $space) {
-                $value = AWX_Token_Defaults::get_value($space);
+                $value = self::get_value($space);
                 $sizes[] = [
                     'slug' => 'awx-' . $slug,
                     'size' => $value,
@@ -286,7 +286,7 @@ class AWX_Theme_JSON_Integration
                 $presets[] = [
                     'slug' => 'awx-' . $slug,
                     'name' => $names[$slug] ?? 'Shadow ' . $slug,
-                    'shadow' => AWX_Token_Defaults::get_value($value),
+                    'shadow' => self::get_value($value),
                 ];
             }
         }
@@ -300,8 +300,7 @@ class AWX_Theme_JSON_Integration
     /**
      * Build custom properties (--wp--custom--*).
      *
-     * Uses AWX_Token_Defaults::get_value() for consistent value extraction
-     * regardless of whether tokens come as strings, arrays, or Flow Builder format.
+     * Uses self::get_value() for consistent value extraction
      */
     private function build_custom($tokens)
     {
@@ -311,7 +310,7 @@ class AWX_Theme_JSON_Integration
         $extract = function ($group) {
             $result = [];
             foreach ($group as $slug => $token) {
-                $result[$slug] = AWX_Token_Defaults::get_value($token);
+                $result[$slug] = self::get_value($token);
             }
             return $result;
         };
@@ -320,7 +319,7 @@ class AWX_Theme_JSON_Integration
         if (!empty($tokens['fontWeight'])) {
             $custom['fontWeight'] = [];
             foreach ($tokens['fontWeight'] as $slug => $token) {
-                $custom['fontWeight'][$slug] = (int) AWX_Token_Defaults::get_value($token);
+                $custom['fontWeight'][$slug] = (int) self::get_value($token);
             }
         }
 
@@ -328,7 +327,7 @@ class AWX_Theme_JSON_Integration
         if (!empty($tokens['leading'])) {
             $custom['lineHeight'] = [];
             foreach ($tokens['leading'] as $slug => $token) {
-                $custom['lineHeight'][$slug] = (float) AWX_Token_Defaults::get_value($token);
+                $custom['lineHeight'][$slug] = (float) self::get_value($token);
             }
         }
 
@@ -361,7 +360,7 @@ class AWX_Theme_JSON_Integration
         if (!empty($tokens['z'])) {
             $custom['zIndex'] = [];
             foreach ($tokens['z'] as $slug => $token) {
-                $custom['zIndex'][$slug] = (int) AWX_Token_Defaults::get_value($token);
+                $custom['zIndex'][$slug] = (int) self::get_value($token);
             }
         }
 
@@ -373,11 +372,81 @@ class AWX_Theme_JSON_Integration
                     $custom_key = str_replace('measure-', '', $key);
                     if ($custom_key === 'measure')
                         $custom_key = 'default';
-                    $custom['measure'][$custom_key] = AWX_Token_Defaults::get_value($tokens['width'][$key]);
+                    $custom['measure'][$custom_key] = self::get_value($tokens['width'][$key]);
                 }
             }
         }
 
         return $custom;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // HELPER METHODS (self-contained — no dependency on plugin method versions)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Extract the raw value from a token entry.
+     *
+     * Token entries can be:
+     * - A simple string: '4px'
+     * - An array with 'value' key: ['value' => '4px', 'name' => 'Small']
+     * - An array from Awesome Flow Builder with '_value' key
+     *
+     * @param mixed $token
+     * @return string
+     */
+    private static function get_value($token)
+    {
+        if (is_string($token)) {
+            return self::sanitize_css_value($token);
+        }
+        if (is_array($token)) {
+            $val = $token['_value'] ?? $token['value'] ?? '';
+            return self::sanitize_css_value((string) $val);
+        }
+        return self::sanitize_css_value((string) $token);
+    }
+
+    /**
+     * Sanitize a CSS value.
+     *
+     * Fixes "3 rem" → "3rem", "48 px" → "48px" (Flow Builder splitting bug).
+     *
+     * @param string $value
+     * @return string
+     */
+    private static function sanitize_css_value($value)
+    {
+        $value = trim($value);
+        $value = preg_replace(
+            '/^(-?\d*\.?\d+)\s+(rem|em|px|vh|vw|ch|%|ms|s)$/i',
+            '$1$2',
+            $value
+        );
+        return $value;
+    }
+
+    /**
+     * Sanitize a font-family value for WordPress theme.json.
+     *
+     * WordPress strips leading quotes. This ensures single-word font names
+     * are unquoted and multi-word names are properly quoted.
+     *
+     * @param string $font_family
+     * @return string
+     */
+    private static function sanitize_font_family($font_family)
+    {
+        $fonts = array_map('trim', explode(',', $font_family));
+        $result = [];
+        foreach ($fonts as $font) {
+            $clean = trim($font, "\"' ");
+            if (preg_match('/\s/', $clean) && !preg_match('/^(system-ui|ui-monospace|ui-sans-serif|ui-serif)$/', $clean)) {
+                $result[] = "'" . $clean . "'";
+            } else {
+                $result[] = $clean;
+            }
+        }
+        return implode(', ', $result);
     }
 }
