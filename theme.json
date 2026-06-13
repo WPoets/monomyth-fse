@@ -100,6 +100,11 @@
                     "name": "Background"
                 },
                 {
+                    "slug": "awx-surface-sunken",
+                    "color": "#edf0f3",
+                    "name": "Surface Sunken"
+                },
+                {
                     "slug": "awx-surface",
                     "color": "#f8fafc",
                     "name": "Surface"
@@ -108,6 +113,16 @@
                     "slug": "awx-surface-raised",
                     "color": "#ffffff",
                     "name": "Surface Raised"
+                },
+                {
+                    "slug": "awx-surface-brand-subtle",
+                    "color": "#dbeafe",
+                    "name": "Surface Brand Subtle"
+                },
+                {
+                    "slug": "awx-surface-brand",
+                    "color": "#1b6bbb",
+                    "name": "Surface Brand"
                 },
                 {
                     "slug": "awx-on-background",
@@ -954,12 +969,17 @@
         {
             "name": "blank",
             "title": "Blank",
-            "postTypes": ["page", "post"]
+            "postTypes": [
+                "page",
+                "post"
+            ]
         },
         {
             "name": "page-no-title",
             "title": "Page (No Title)",
-            "postTypes": ["page"]
+            "postTypes": [
+                "page"
+            ]
         }
     ]
 }
