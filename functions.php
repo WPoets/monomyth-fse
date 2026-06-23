@@ -66,7 +66,6 @@ function monomyth_ae_module_exists($module_name, $post_type = '')
         'post_status' => 'publish',
         'numberposts' => 1,
     ));
-
     return !empty($existing);
 }
 
@@ -82,7 +81,6 @@ function monomyth_ae_module_run($args, $module)
     if (!monomyth_is_awesome_active()) {
         return '';
     }
-
     return \aw2_library::module_run($args, $module);
 
 }
@@ -719,7 +717,83 @@ function monomyth_load_awx_integration()
 }
 add_action('after_setup_theme', 'monomyth_load_awx_integration');
 
-// GitHub Updater
+/**
+ * ============================================================================
+ * AWESOME ENTERPRISE ASSETS (Scripts/Styles from Core "script" module)
+ * ============================================================================
+ */
+
+/**
+ * Output head assets from AE "script" module in core
+ */
+function monomyth_ae_head_scripts()
+{
+    if (!monomyth_is_awesome_active()) {
+        return;
+    }
+
+    $core_post_type = monomyth_get_awesome_core_post_type();
+    if (empty($core_post_type)) {
+        return;
+    }
+
+    // Run "script" module from core with position=head
+    if (monomyth_ae_module_exists('header-script', $core_post_type)) {
+        echo monomyth_ae_module_run(
+            array('post_type' => $core_post_type),
+            'header-script'
+        );
+    }
+
+    //Run "script" module from app if it exists in config
+    $app_config_post_type = monomyth_get_app_collection_post_type();
+
+    if (empty($app_config_post_type)) {
+        return;
+    }
+    $output = 'HElo';
+    if (monomyth_ae_module_exists('header-script', $app_config_post_type)) {
+        $output = monomyth_ae_module_run(
+            array('post_type' => $app_config_post_type),
+            'header-script'
+        );
+        echo $output;
+    }
+}
+add_action('wp_head', 'monomyth_ae_head_scripts', 100);
+
+/**
+ * Output footer assets from AE "script" module in core
+ */
+function monomyth_ae_footer_scripts()
+{
+    if (!monomyth_is_awesome_active()) {
+        return;
+    }
+
+    $core_post_type = monomyth_get_awesome_core_post_type();
+    if (empty($core_post_type)) {
+        return;
+    }
+
+    // Run "script" module from core with position=footer
+    if (monomyth_ae_module_exists('footer-script', $core_post_type)) {
+        $output = monomyth_ae_module_run(
+            array('post_type' => $core_post_type),
+            'footer-script'
+        );
+        echo $output;
+    }
+}
+add_action('wp_footer', 'monomyth_ae_footer_scripts', 100);
+
+/**
+ * ============================================================================
+ * GITHUB THEME UPDATER
+ * ============================================================================
+ */
+
+// Include GitHub updater for automatic updates via GitHub releases
 require_once get_template_directory() . '/inc/github-updater.php';
 
 Monomyth_GitHub_Updater::init(array(
