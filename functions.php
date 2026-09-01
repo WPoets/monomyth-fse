@@ -751,7 +751,7 @@ function monomyth_ae_head_scripts()
     if (empty($app_config_post_type)) {
         return;
     }
-    $output = 'HElo';
+    $output = '';
     if (monomyth_ae_module_exists('header-script', $app_config_post_type)) {
         $output = monomyth_ae_module_run(
             array('post_type' => $app_config_post_type),
@@ -776,6 +776,7 @@ function monomyth_ae_footer_scripts()
         return;
     }
 
+    $output = '';
     // Run "script" module from core with position=footer
     if (monomyth_ae_module_exists('footer-script', $core_post_type)) {
         $output = monomyth_ae_module_run(
@@ -786,6 +787,12 @@ function monomyth_ae_footer_scripts()
     }
 }
 add_action('wp_footer', 'monomyth_ae_footer_scripts', 100);
+
+add_action('wp_head', function () {
+    if (has_filter('pre_get_document_title')) {
+        remove_action('wp_head', '_block_template_render_title_tag', 1);
+    }
+}, 0);
 
 /**
  * ============================================================================
