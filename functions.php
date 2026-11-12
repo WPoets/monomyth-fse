@@ -808,3 +808,115 @@ Monomyth_GitHub_Updater::init(array(
     'repo' => 'WPoets/monomyth-fse',  // GitHub username/repo
     'cache_hours' => 24,
 ));
+
+/**
+ * WordPress User Enumeration Protection
+ *
+ * Protects against common username enumeration techniques:
+ * - ?author=1 query parameter
+ * - Author enumeration through canonical redirects
+ * - Public REST API user endpoints
+ *
+ * Compatible with PHP 7.4+
+ */
+
+/**
+ * 1. Block author query parameter enumeration.
+ *
+ * Blocks requests containing an author parameter,
+ * except the WordPress comment submission endpoint.
+ */
+function monomyth_block_author_enumeration()
+{
+
+    if (is_admin() || wp_doing_ajax()) {
+        return;
+    }
+
+    // Allow WordPress comment submissions.
+    $request_uri = isset($_SERVER['REQUEST_URI'])
+        ? wp_unslash($_SERVER['REQUEST_URI'])
+        : '';
+
+    $request_path = wp_parse_url($request_uri, PHP_URL_PATH);
+
+    if (
+        is_string($request_path) &&
+        preg_match('#/wp-comments-post\.php$#i', $request_path)
+    ) {
+        return;
+    }
+
+    // Check parsed GET parameters.
+    if (isset($_GET['author'])) {
+        wp_die(
+            'Forbidden',
+            'Forbidden',
+            array('response' => 403)
+        );
+    }
+}
+add_action('init', 'monomyth_block_author_enumeration', 1);
+
+
+/**
+ * 2. Block author enumeration through canonical redirects.
+ */
+function monomyth_block_author_canonical_redirect($redirect, $requested_url)
+{
+
+    if (is_admin() || wp_doing_ajax()) {
+        return $redirect;
+    }
+
+    $query = wp_parse_url($requested_url, PHP_URL_QUERY);
+
+    if (!is_string($query) || '' === $query) {
+        return $redirect;
+    }
+
+    parse_str($query, $query_params);
+
+    if (array_key_exists('author', $query_params)) {
+        return false;
+    }
+
+    return $redirect;
+}
+add_filter(
+    'redirect_canonical',
+    'monomyth_block_author_canonical_redirect',
+    10,
+    2
+);
+
+
+/**
+ * 3. Disable public REST API user endpoints.
+ *
+ * Logged-in users retain normal REST API access.
+ */
+function monomyth_disable_public_user_rest_endpoints($endpoints)
+{
+
+    if (is_user_logged_in()) {
+        return $endpoints;
+    }
+
+    $user_endpoints = array(
+        '/wp/v2/users',
+        '/wp/v2/users/(?P<id>[\d]+)',
+    );
+
+    foreach ($user_endpoints as $endpoint) {
+        if (isset($endpoints[$endpoint])) {
+            unset($endpoints[$endpoint]);
+        }
+    }
+
+    return $endpoints;
+}
+add_filter(
+    'rest_endpoints',
+    'monomyth_disable_public_user_rest_endpoints'
+);
