@@ -3,6 +3,11 @@ Monomyth FSE is a minimal Full Site Editing (FSE) theme designed to work seamles
 
 ### Changelog 
 
+##### 1.0.4
+* Improved: Added logo & screenshot
+* Improved: Protects against common username enumeration techniques:
+* Fixed: In case of SEO plugins, the title tag was getting duplicated.
+  
 ##### 1.0.3
 * Improved: Updated theme to support newer awesome css variables.
 * Improved: Added support for adding custom scripts and styles using "header-script" and "footer-script" in both core as well as app config.
